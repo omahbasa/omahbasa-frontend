@@ -1,4 +1,7 @@
+'use client';
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 
 const Sidebar = () => (
@@ -8,7 +11,7 @@ const Sidebar = () => (
                 Omahbasa
             </div>
             <nav className="space-y-2">
-                <Link href="/" className="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <Link href="/dashboard" className="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                     <span className="mr-3 text-lg">🏠</span>
                     <span className="font-medium">Beranda</span>
                 </Link>
@@ -20,7 +23,7 @@ const Sidebar = () => (
                     <span className="mr-3 text-lg">🗣️</span>
                     <span className="font-medium">Swara</span>
                 </Link>
-                <Link href="/skor" className="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <Link href="/papanskor" className="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                     <span className="mr-3 text-lg">🏆</span>
                     <span className="font-medium">Papan Skor</span>
                 </Link>
@@ -36,14 +39,35 @@ const Sidebar = () => (
     </aside>
 );
 
-const Header = () => (
-    <header className="p-4 bg-white dark:bg-gray-900 shadow-sm flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
-        <h1 className="text-xl font-semibold text-gray-800 dark:text-white">Dashboard</h1>
-        <div className="flex items-center space-x-4">
-            <span className="text-gray-700 dark:text-gray-300">Halo, Pengguna!</span>
-        </div>
-    </header>
-);
+const getPageTitle = (pathname: string): string => {
+    const pageMap: { [key: string]: string } = {
+        '/': 'Beranda',
+        '/sinau': 'Sinau',
+        '/swara': 'Swara', 
+        '/papanskor': 'Papan Skor',
+        '/profil': 'Profil',
+        // Tambahkan rute lainnya sesuai kebutuhan
+    };
+
+    // Handle nested routes - ambil bagian pertama dari path
+    const basePath = '/' + pathname.split('/')[1];
+    
+    return pageMap[pathname] || pageMap[basePath] || 'Dashboard';
+};
+
+const Header = () => {
+    const pathname = usePathname();
+    const pageTitle = getPageTitle(pathname);
+    
+    return (
+        <header className="p-4 bg-white dark:bg-gray-900 shadow-sm flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
+            <h1 className="text-xl font-semibold text-gray-800 dark:text-white">{pageTitle}</h1>
+            <div className="flex items-center space-x-4">
+                <span className="text-gray-700 dark:text-gray-300">Halo, Pengguna!</span>
+            </div>
+        </header>
+    );
+};
 
 export default function MainLayout({
     children,
