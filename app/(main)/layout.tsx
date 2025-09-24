@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { useState } from "react";
@@ -29,7 +30,8 @@ const Navbar = () => {
                     {/* Logo */}
                     <div className="flex-shrink-0">
                         <Link href="/dashboard" className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                            Omahbasa
+                            <Image src="/logo.png" alt="Omahbasa" width={32} height={32} />
+                            {/* Omahbasa */}
                         </Link>
                     </div>
 
@@ -39,8 +41,8 @@ const Navbar = () => {
                             <Link
                                 href="/dashboard"
                                 className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive('/dashboard')
-                                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                    ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                             >
                                 <span className="mr-2">🏠</span>
@@ -49,8 +51,8 @@ const Navbar = () => {
                             <Link
                                 href="/sinau"
                                 className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive('/sinau')
-                                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                    ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                             >
                                 <span className="mr-2">📚</span>
@@ -59,8 +61,8 @@ const Navbar = () => {
                             <Link
                                 href="/swara"
                                 className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive('/swara')
-                                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                    ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                             >
                                 <span className="mr-2">🗣️</span>
@@ -69,8 +71,8 @@ const Navbar = () => {
                             <Link
                                 href="/papanskor"
                                 className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive('/papanskor')
-                                        ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                    ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                                     }`}
                             >
                                 <span className="mr-2">🏆</span>
@@ -152,8 +154,8 @@ const Navbar = () => {
                         <Link
                             href="/dashboard"
                             className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors ${isActive('/dashboard')
-                                    ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                                 }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -163,8 +165,8 @@ const Navbar = () => {
                         <Link
                             href="/sinau"
                             className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors ${isActive('/sinau')
-                                    ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                                 }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -174,8 +176,8 @@ const Navbar = () => {
                         <Link
                             href="/swara"
                             className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors ${isActive('/swara')
-                                    ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                                 }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -185,8 +187,8 @@ const Navbar = () => {
                         <Link
                             href="/papanskor"
                             className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors ${isActive('/papanskor')
-                                    ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                                ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                                 }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
