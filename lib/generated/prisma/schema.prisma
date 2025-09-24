@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  progress LessonProgress[]
+}
+
+model Unit {
+  id          String @id @default(cuid())
+  title       String
+  description String
+  order       Int    @unique
+
+  lessons Lesson[]
+}
+
+model Lesson {
+  id    String @id @default(cuid())
+  title String
+
+  unitId String
+  unit   Unit   @relation(fields: [unitId], references: [id])
+
+  questions Question[]
+
+  progress LessonProgress[]
+}
+
+model Question {
+  id            String @id @default(cuid())
+  text          String
+  type          String
+  options       Json?
+  correctAnswer String
+
+  lessonId String
+  lesson   Lesson @relation(fields: [lessonId], references: [id])
+}
+
+model LessonProgress {
+  id        String  @id @default(cuid())
+  completed Boolean @default(false)
+  score     Int     @default(0)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  lessonId String
+  lesson   Lesson @relation(fields: [lessonId], references: [id])
+
+  @@unique([userId, lessonId])
+}
