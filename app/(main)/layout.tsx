@@ -5,8 +5,10 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
+    const router = useRouter();
     const pathname = usePathname();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -30,7 +32,7 @@ const Navbar = () => {
                     {/* Logo */}
                     <div className="flex-shrink-0">
                         <Link href="/dashboard" className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                            <Image src="/logo.png" alt="Omahbasa" width={32} height={32} />
+                            <Image src="/logo.png" alt="Omahbasa" width={32} height={32} className="rounded-4xl" />
                             {/* Omahbasa */}
                         </Link>
                     </div>
@@ -135,7 +137,7 @@ const Navbar = () => {
                                     onClick={() => {
                                         setIsDropdownOpen(false);
                                         // Tambahkan logika logout di sini
-                                        console.log('Logout clicked');
+                                        router.push('/login')
                                     }}
                                 >
                                     <span className="mr-2">🚪</span>
