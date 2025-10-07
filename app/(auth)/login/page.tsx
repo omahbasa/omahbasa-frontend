@@ -6,14 +6,48 @@ import { Input as AntInput } from "antd";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useAuth } from '@/context/AuthContext';
+import { useState } from 'react';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+ const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/dashboard');
-    console.log("Login submitted");
+    setError('');
+
+    if (!email || !password) {
+        setError("Email dan password tidak boleh kosong.");
+        return;
+    }
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Gagal untuk login');
+      }
+
+      login(data.token);
+      router.push('/dashboard');
+
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Terjadi kesalahan saat login.');
+      }
+    }
   };
 
   return (
@@ -31,7 +65,9 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <div className="space-y-6">
+        {error && <p className="text-red-400 text-center text-sm">{error}</p>}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="email" className="text-[#FFF9AF] font-medium">
               Email
@@ -41,6 +77,8 @@ export default function LoginPage() {
               type="email"
               placeholder="contoh@email.com"
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               style={{ fontFamily: "Inter, sans-serif" }}
               className="bg-[#33A1E0]/30 border-[#33A1E0]/50 text-white placeholder:text-white/50 focus:bg-[#33A1E0]/40 focus:border-[#33A1E0] transition-all duration-300 rounded-xl h-12 [&_input]:bg-transparent [&_input]:text-white [&_input]:placeholder:text-white/50"
             />
@@ -62,6 +100,8 @@ export default function LoginPage() {
               id="password"
               placeholder="Masukkan password"
               required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               iconRender={(visible) =>
                 visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
               }
@@ -70,12 +110,12 @@ export default function LoginPage() {
           </div>
 
           <Button
-            onClick={handleSubmit}
+            type="submit"
             className="w-full bg-gradient-to-r from-[#33A1E0] to-[#1C6EA4] hover:from-[#33A1E0]/90 hover:to-[#1C6EA4]/90 shadow-lg hover:shadow-xl hover:cursor-pointer transform hover:scale-[1.02] transition-all duration-300 rounded-xl h-12 font-semibold text-white"
           >
             Masuk
           </Button>
-        </div>
+        </form>
 
         <div className="relative flex items-center">
           <div className="flex-1 border-t border-white/20"></div>
