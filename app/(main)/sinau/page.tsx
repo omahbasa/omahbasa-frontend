@@ -1,14 +1,21 @@
 const SinauPage = () => {
     return (
-        <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Sinau Omahbasa</h1>
-            <p className="mt-2 text-lg text-gray-700 dark:text-gray-300">
-                Selamat datang di halaman Sinau! Di sini Anda dapat memilih berbagai materi untuk belajar bahasa Jawa,
-                mulai dari tingkat dasar hingga lanjutan. Pilih materi yang sesuai dengan kebutuhan Anda dan mulailah
-                perjalanan belajar Anda bersama Omahbasa.
-            </p>
+        <div className="bg-white shadow-sm rounded-lg border border-gray-200">
+            <div className="p-6 border-b border-gray-200">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">Sinau (Belajar)</h1>
+                <p className="text-lg text-gray-700">
+                    Pilih materi untuk mulai belajar undha-usuk basa.
+                </p>
+            </div>
+
+            <div className="p-6">
+                <p className="text-gray-700">
+                    Konten pembelajaran (Unit dan Lesson) akan ditampilkan di sini.
+                    Saat ini, daftar pelajaran ada di halaman Dashboard.
+                </p>
+            </div>
         </div>
-    )
+    );
 }
 
-export default SinauPage
+export default SinauPage;

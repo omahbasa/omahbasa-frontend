@@ -2,38 +2,72 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Label } from "@/components/ui/Label";
-import { Input as AntInput } from "antd";
+import { Input as AntInput, notification } from "antd";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/dashboard');
-    console.log("Login submitted");
+    setIsLoading(true);
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Terjadi kesalahan saat login');
+      }
+
+      localStorage.setItem('omahbasa_token', data.token);
+
+      toast.success('Login Berhasil! Anda akan diarahkan...');
+
+      setTimeout(() => {
+        router.push('/dashboard');
+        router.refresh();
+      }, 1000);
+
+    } catch (error: any) {
+      toast.error(error.message || 'Email atau password salah. Silakan coba lagi.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen min-w-screen bg-[#154D71] relative overflow-hidden p-4 font-sans">
-      <div className="w-full max-w-md p-5 space-y-8 bg-[#1C6EA4] backdrop-blur-xl rounded-3xl shadow-2xl border border-white/10 relative z-10 my-auto">
+    <div className="flex items-center justify-center min-h-screen  p-4 font-sans">
+      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-2xl shadow-lg">
         <div className="text-center space-y-3">
-          <div className="inline-block p-4 bg-[#33A1E0]/20 rounded-4xl backdrop-blur-sm mb-2">
+          <div className="inline-block p-3 bg-blue-100 rounded-2xl mb-2">
             <Image src="/logo.png" alt="Omahbasa" width={48} height={48} />
           </div>
-          <h1 className="text-2xl font-bold text-[#FFF9AF] tracking-tight">
+          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
             Selamat Datang di Omahbasa
           </h1>
-          <p className="text-[#FFF9AF]/80 text-base mt-[-10]">
+          <p className="text-gray-600 text-base">
             Silakan masuk untuk melanjutkan
           </p>
         </div>
 
-        <div className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-[#FFF9AF] font-medium">
+            <Label htmlFor="email" className="text-gray-700 font-medium">
               Email
             </Label>
             <AntInput
@@ -41,19 +75,21 @@ export default function LoginPage() {
               type="email"
               placeholder="contoh@email.com"
               required
-              style={{ fontFamily: "Inter, sans-serif" }}
-              className="bg-[#33A1E0]/30 border-[#33A1E0]/50 text-white placeholder:text-white/50 focus:bg-[#33A1E0]/40 focus:border-[#33A1E0] transition-all duration-300 rounded-xl h-12 [&_input]:bg-transparent [&_input]:text-white [&_input]:placeholder:text-white/50"
+              className="h-12 rounded-xl text-base"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={isLoading}
             />
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="password" className="text-[#FFF9AF] font-medium">
+              <Label htmlFor="password" className="text-gray-700 font-medium">
                 Password
               </Label>
               <Link
                 href="/forgot-password"
-                className="text-xs text-[#FFF9AF]/70 hover:text-[#FFF9AF] transition-colors duration-200"
+                className="text-xs text-blue-600 hover:text-blue-700 transition-colors duration-200"
               >
                 Lupa password?
               </Link>
@@ -65,29 +101,33 @@ export default function LoginPage() {
               iconRender={(visible) =>
                 visible ? <EyeOutlined /> : <EyeInvisibleOutlined />
               }
-              className="bg-[#33A1E0]/30 border-[#33A1E0]/50 text-white placeholder:text-white/50 focus:bg-[#33A1E0]/40 focus:border-[#33A1E0] transition-all duration-300 rounded-xl h-12 [&_input]:bg-transparent [&_input]:text-white [&_input]:placeholder:text-white/50 [&_.ant-input-password-icon]:text-white/70 hover:[&_.ant-input-password-icon]:text-white"
+              className="h-12 rounded-xl text-base"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading}
             />
           </div>
 
           <Button
-            onClick={handleSubmit}
-            className="w-full bg-gradient-to-r from-[#33A1E0] to-[#1C6EA4] hover:from-[#33A1E0]/90 hover:to-[#1C6EA4]/90 shadow-lg hover:shadow-xl hover:cursor-pointer transform hover:scale-[1.02] transition-all duration-300 rounded-xl h-12 font-semibold text-white"
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl text-white transform hover:scale-[1.02] transition-all duration-300 rounded-xl h-12 font-semibold"
+            disabled={isLoading}
           >
-            Masuk
+            {isLoading ? "Memproses..." : "Masuk"}
           </Button>
-        </div>
+        </form>
 
         <div className="relative flex items-center">
-          <div className="flex-1 border-t border-white/20"></div>
-          <div className="px-4 text-sm text-[#FFF9AF]/60">atau</div>
-          <div className="flex-1 border-t border-white/20"></div>
+          <div className="flex-1 border-t border-gray-200"></div>
+          <div className="px-4 text-sm text-gray-500">atau</div>
+          <div className="flex-1 border-t border-gray-200"></div>
         </div>
 
-        <p className="text-sm text-center text-white/90">
+        <p className="text-sm text-center text-gray-700">
           Belum punya akun?{" "}
           <Link
             href="/register"
-            className="font-semibold text-[#FFF9AF] hover:text-white transition-colors duration-200 underline decoration-[#33A1E0] underline-offset-4"
+            className="font-semibold text-blue-600 hover:text-blue-700 transition-colors duration-200"
           >
             Daftar di sini
           </Link>

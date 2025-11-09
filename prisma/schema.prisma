@@ -21,7 +21,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  progress LessonProgress[]
+  progress    LessonProgress[]
+  resetTokens PasswordResetToken[]
 }
 
 model Unit {
@@ -41,8 +42,7 @@ model Lesson {
   unit   Unit   @relation(fields: [unitId], references: [id])
 
   questions Question[]
-
-  progress LessonProgress[]
+  progress  LessonProgress[]
 }
 
 model Question {
@@ -68,4 +68,17 @@ model LessonProgress {
   lesson   Lesson @relation(fields: [lessonId], references: [id])
 
   @@unique([userId, lessonId])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  expiresAt DateTime
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }

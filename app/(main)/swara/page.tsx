@@ -1,14 +1,20 @@
 const SwaraPage = () => {
     return (
-        <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Swara Omahbasa</h1>
-            <p className="mt-2 text-lg text-gray-700 dark:text-gray-300">
-                Selamat datang di halaman Swara! Di sini Anda dapat berlatih pengucapan dan mendengarkan kosakata
-                bahasa Jawa yang benar. Gunakan fitur ini untuk meningkatkan kemampuan berbicara Anda dalam bahasa Jawa
-                dengan mendengarkan dan menirukan suara yang disediakan.
-            </p>
+        <div className="bg-white shadow-sm rounded-lg border border-gray-200">
+            <div className="p-6 border-b border-gray-200">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">Swara (Pelafalan)</h1>
+                <p className="text-lg text-gray-700">
+                    Latih pelafalan abjad dan kata-kata bahasa Jawa Anda.
+                </p>
+            </div>
+
+            <div className="p-6">
+                <p className="text-gray-700">
+                    Fitur latihan vokal, konsonan, dan rekaman suara akan dibangun di sini.
+                </p>
+            </div>
         </div>
-    )
+    );
 }
 
-export default SwaraPage
+export default SwaraPage;
